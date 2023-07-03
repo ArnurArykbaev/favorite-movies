@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="" action="">
+  <form @submit.prevent="searchStore.getSearchMovies(searchMovie)" action="">
     <input
       type="text"
       class="search-input"
@@ -7,12 +7,25 @@
       v-model="searchMovie"
     />
   </form>
+  <Loader v-if="searchStore.loader === true" />
+  <div v-else>
+    <Movie
+      v-for="movie of searchStore.movies"
+      :key="movie.id"
+      :movie="movie"
+      :isSearch="true"
+    />
+  </div>
 </template>
 
 <script setup>
+import Loader from "./Loader.vue";
+import Movie from "./Movie.vue";
 import { ref } from "vue";
+import { useSearchStore } from "../stores/SearchStore";
 
 const searchMovie = ref("");
+const searchStore = useSearchStore();
 </script>
 
 <style scoped>
